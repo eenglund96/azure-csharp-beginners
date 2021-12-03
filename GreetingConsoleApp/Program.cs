@@ -4,12 +4,6 @@ public class Program                                                    //This c
 {
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {
-       //WriteBypassGreetingWriter();                                   //Commented out this line of code to skip this method call
-       WriteWithGreetingWriter();                                       //Moved logic to methods to make it easier to switch between old and new logic
-    }
-
-    public static void WriteWithGreetingWriter()                      
-    {
         var greeting = new Greeting
         {
             Message = "How are you?",
@@ -26,7 +20,7 @@ public class Program                                                    //This c
             To = "Anton",
             Timestamp = DateTime.Now,
             Year = 2022,
-            // GreetingWriter = new ColorGreetingWriter(),              //Commented out to make this throw NullReferenceException
+            GreetingWriter = new ColorGreetingWriter(),              //Commented out to make this throw NullReferenceException
         };
 
         var christmasGreeting = new ChristmasGreeting
@@ -39,50 +33,52 @@ public class Program                                                    //This c
             GreetingWriter = new BlackWhiteGreetingWriter(),
         };
 
-        greeting.WriteMessage();
-        newYearGreeting.WriteMessage();                                 
-        christmasGreeting.WriteMessage();
+        ProcessGreeting(greeting);                                      //Process a single greeting
+        
+        var greetings = new List<Greeting>();
+        greetings.Add(greeting);
+        greetings.Add(newYearGreeting);
+        greetings.Add(christmasGreeting);
+
+        ProcessGreetings(greetings);                                    //Process multiple greetings
+
+        var largeGreetingsBatch = GenerateGreetings(1000);
+        ProcessGreetings(largeGreetingsBatch);
 
         Console.WriteLine("\nDone!\n");
     }
 
-    public static void WriteBypassGreetingWriter()
+    public static void ProcessGreeting(Greeting greeting)
     {
-        Console.WriteLine("\nGreeting message");
-        Greeting greeting = new Greeting
+        greeting.WriteMessage();
+    }
+
+    public static void ProcessGreetings(List<Greeting> greetings)
+    {
+        Console.WriteLine($"### PROCESSING BATCH OF {greetings.Count} GREETING(S) ###");
+        
+        foreach (var greeting in greetings)
         {
-            Message = "How are you?",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-        };
+            ProcessGreeting(greeting);                                  //Reuse ProcessGreeting()
+        }
 
-        Console.WriteLine(greeting.GetMessage());
+        Console.WriteLine($"### FINISHED PROCESSING BATCH OF {greetings.Count} GREETING(S) ###");
+    } 
 
-        Console.WriteLine("\nNewYearGreeting message");
-        NewYearGreeting newYearGreeting = new NewYearGreeting
+    public static List<Greeting> GenerateGreetings(int count)
+    {
+        var greetings = new List<Greeting>();
+        for(var i=1;i<=count;i++)
         {
-            Message = "Happy new year!",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-            Year = 2022,
-        };
+            var greeting = new Greeting
+            {
+                Message = $"This is greeting no {i}",
+                Timestamp = DateTime.Now,
+                GreetingWriter = new BlackWhiteGreetingWriter(),
+            };
+            greetings.Add(greeting);
+        }
 
-        Console.WriteLine(newYearGreeting.GetMessage());
-
-        Console.WriteLine("\nChristmasGreeting message");
-        var christmasGreeting = new ChristmasGreeting                               //using "var christmasGreeting" as type declaration instead of "ChristmasGreeting christmasGreeting"
-        {
-            Message = "Merry Christmas!",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-            ChristmasPresent = "SDNA13215"
-        };
-
-        Console.WriteLine(christmasGreeting.GetMessage());
-
-        Console.WriteLine("\nDone!\n");
+        return greetings;
     }
 }
