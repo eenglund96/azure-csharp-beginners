@@ -6,6 +6,6 @@ public class ChristmasGreeting : Greeting
 
     public override string GetMessage()
     {
-        return $"{Message}\nHere's your present: {ChristmasPresent}";                   //Not reusing GetMessage() logic from base class. Try updating GetMessage in base class (Greeting class) and see what happens
+        return $"{base.GetMessage()}\nHere's your present: {ChristmasPresent}";                   //Not reusing GetMessage() logic from base class. Try updating GetMessage in base class (Greeting class) and see what happens
     }
 }

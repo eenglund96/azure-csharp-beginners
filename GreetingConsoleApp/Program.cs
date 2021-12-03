@@ -4,6 +4,50 @@ public class Program                                                    //This c
 {
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {
+       //WriteBypassGreetingWriter();                                   //Commented out this line of code to skip this method call
+       WriteWithGreetingWriter();                                       //Moved logic to methods to make it easier to switch between old and new logic
+    }
+
+    public static void WriteWithGreetingWriter()                      
+    {
+        var greeting = new Greeting
+        {
+            Message = "How are you?",
+            From = "Keen",
+            To = "Anton",
+            Timestamp = DateTime.Now,
+            GreetingWriter = new BlackWhiteGreetingWriter(),
+        };
+
+        var newYearGreeting = new NewYearGreeting
+        {
+            Message = "Happy new year!",
+            From = "Keen",
+            To = "Anton",
+            Timestamp = DateTime.Now,
+            Year = 2022,
+            GreetingWriter = new ColorGreetingWriter(),
+        };
+
+        var christmasGreeting = new ChristmasGreeting
+        {
+            Message = "Merry Christmas!",
+            From = "Keen",
+            To = "Anton",
+            Timestamp = DateTime.Now,
+            ChristmasPresent = "SDNA13215",
+            GreetingWriter = new BlackWhiteGreetingWriter(),
+        };
+
+        greeting.WriteMessage();
+        newYearGreeting.WriteMessage();
+        christmasGreeting.WriteMessage();
+
+        Console.WriteLine("\nDone!\n");
+    }
+
+    public static void WriteBypassGreetingWriter()
+    {
         Console.WriteLine("\nGreeting message");
         Greeting greeting = new Greeting
         {
