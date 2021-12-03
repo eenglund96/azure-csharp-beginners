@@ -14,8 +14,19 @@ public class Greeting
 
     public void WriteMessage()
     {
-        var message = GetMessage();
-        GreetingWriter.Write(message);
-        Console.WriteLine();                    //Write empty line to make output easier to read
+        try
+        {
+            var message = GetMessage();
+            GreetingWriter.Write(message);
+            Console.WriteLine();                                    //Write empty line to make output easier to read
+        }
+        catch (NullReferenceException)                              //If thrown exception is of type NullReferenceException code will enter here
+        {
+            Console.WriteLine("ERROR: Failed to write greeting. GreetingWriter or something was null\n");           
+        }
+        catch (Exception e)                                         //All other exceptions will enter here. Also save the thrown exception in variable 'e' so we can use it in our exception handling
+        {
+            Console.WriteLine($"Something went wrong, here is the full exception: {e}");
+        }
     }
 }

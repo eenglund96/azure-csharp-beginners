@@ -26,7 +26,7 @@ public class Program                                                    //This c
             To = "Anton",
             Timestamp = DateTime.Now,
             Year = 2022,
-            GreetingWriter = new ColorGreetingWriter(),
+            // GreetingWriter = new ColorGreetingWriter(),              //Commented out to make this throw NullReferenceException
         };
 
         var christmasGreeting = new ChristmasGreeting
@@ -40,7 +40,7 @@ public class Program                                                    //This c
         };
 
         greeting.WriteMessage();
-        newYearGreeting.WriteMessage();
+        newYearGreeting.WriteMessage();                                 
         christmasGreeting.WriteMessage();
 
         Console.WriteLine("\nDone!\n");
