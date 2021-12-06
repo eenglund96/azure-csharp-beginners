@@ -4,46 +4,27 @@ public class Program                                                    //This c
 {
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {
-        var greeting = new Greeting
+        Console.WriteLine("Available templates:");
+
+        var repo = InitGreetingTemplateRepository();
+
+        foreach (var template in repo.GreetingTemplates)
         {
-            Message = "How are you?",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-            GreetingWriter = new BlackWhiteGreetingWriter(),
-        };
+            Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
+        }
 
-        var newYearGreeting = new NewYearGreeting
+        Console.WriteLine("Enter template ID to print:");
+
+        try
         {
-            Message = "Happy new year!",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-            Year = 2022,
-            GreetingWriter = new ColorGreetingWriter(),              //Commented out to make this throw NullReferenceException
-        };
-
-        var christmasGreeting = new ChristmasGreeting
+            var id = int.Parse(Console.ReadLine());
+            var greeting = repo.GetGreetingTemplate(id);
+            Console.WriteLine(greeting.GetMessage());
+        }
+        catch
         {
-            Message = "Merry Christmas!",
-            From = "Keen",
-            To = "Anton",
-            Timestamp = DateTime.Now,
-            ChristmasPresent = "SDNA13215",
-            GreetingWriter = new BlackWhiteGreetingWriter(),
-        };
-
-        ProcessGreeting(greeting);                                      //Process a single greeting
-        
-        var greetings = new List<Greeting>();
-        greetings.Add(greeting);
-        greetings.Add(newYearGreeting);
-        greetings.Add(christmasGreeting);
-
-        ProcessGreetings(greetings);                                    //Process multiple greetings
-
-        var largeGreetingsBatch = GenerateGreetings(1000);
-        ProcessGreetings(largeGreetingsBatch);
+            Console.WriteLine("Failed to print template");
+        }
 
         Console.WriteLine("\nDone!\n");
     }
@@ -51,6 +32,29 @@ public class Program                                                    //This c
     public static void ProcessGreeting(Greeting greeting)
     {
         greeting.WriteMessage();
+    }
+
+    public static GreetingTemplateRepository InitGreetingTemplateRepository()
+    {
+        var repo = new GreetingTemplateRepository();
+
+        var christmasTemplate = new ChristmasGreeting
+        {
+            Message = "A generic christmas greeting!",
+            Timestamp = DateTime.Now,
+            ChristmasPresent = "DSAN13284",
+        };
+        repo.SaveGreetingTemplate(1, christmasTemplate);           //Save a greeting in the repo
+
+        var newYearGreetingTemplate = new NewYearGreeting
+        {
+            Message = "A generic new year greeting!",
+            Timestamp = DateTime.Now,
+            Year = 2022,
+        };
+        repo.SaveGreetingTemplate(2, newYearGreetingTemplate);       //Save another greeting in the repo
+
+        return repo;
     }
 
     public static void ProcessGreetings(List<Greeting> greetings)
