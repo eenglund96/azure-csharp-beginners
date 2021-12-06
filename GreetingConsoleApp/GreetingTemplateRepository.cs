@@ -22,6 +22,6 @@ public class GreetingTemplateRepository
         if (GreetingTemplates.TryAdd(id, greeting))
             return id;
 
-        throw new Exception("Failed to save GreetingTemplate");
+        throw new Exception($"Failed to save GreetingTemplate, key {id} already exists");
     }
 }

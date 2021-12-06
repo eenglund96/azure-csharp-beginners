@@ -13,7 +13,7 @@ public class Program                                                    //This c
             Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
         }
 
-        Console.WriteLine("Enter template ID to print:");
+        Console.WriteLine("\nEnter template ID to print:");
 
         try
         {
