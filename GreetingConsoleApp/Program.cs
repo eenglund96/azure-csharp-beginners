@@ -2,13 +2,20 @@
 
 public class Program                                                    //This class contains the first code that is executed when the program is started
 {
+    private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
+
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
+    {
+        PrintGreetingTemplate();        
+
+        Console.WriteLine("\nDone!\n");
+    }
+
+    public static void PrintGreetingTemplate()
     {
         Console.WriteLine("Available templates:");
 
-        var repo = InitGreetingTemplateRepository();
-
-        foreach (var template in repo.GreetingTemplates)
+        foreach (var template in greetingTemplateRepository.GreetingTemplates)
         {
             Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
         }
@@ -18,43 +25,18 @@ public class Program                                                    //This c
         try
         {
             var id = int.Parse(Console.ReadLine());
-            var greeting = repo.GetGreetingTemplate(id);
+            var greeting = greetingTemplateRepository.GetGreetingTemplate(id);
             Console.WriteLine(greeting.GetMessage());
         }
         catch
         {
             Console.WriteLine("Failed to print template");
         }
-
-        Console.WriteLine("\nDone!\n");
     }
 
     public static void ProcessGreeting(Greeting greeting)
     {
         greeting.WriteMessage();
-    }
-
-    public static GreetingTemplateRepository InitGreetingTemplateRepository()
-    {
-        var repo = new GreetingTemplateRepository();
-
-        var christmasTemplate = new ChristmasGreeting
-        {
-            Message = "A generic christmas greeting!",
-            Timestamp = DateTime.Now,
-            ChristmasPresent = "DSAN13284",
-        };
-        repo.SaveGreetingTemplate(1, christmasTemplate);           //Save a greeting in the repo
-
-        var newYearGreetingTemplate = new NewYearGreeting
-        {
-            Message = "A generic new year greeting!",
-            Timestamp = DateTime.Now,
-            Year = 2022,
-        };
-        repo.SaveGreetingTemplate(2, newYearGreetingTemplate);       //Save another greeting in the repo
-
-        return repo;
     }
 
     public static void ProcessGreetings(List<Greeting> greetings)

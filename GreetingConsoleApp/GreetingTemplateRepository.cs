@@ -2,11 +2,25 @@ namespace GreetingConsoleApp;
 
 public class GreetingTemplateRepository
 {
-    public Dictionary<int, Greeting> GreetingTemplates { get; set; }
+    public Dictionary<int, Greeting> GreetingTemplates { get; set; } = new Dictionary<int, Greeting>();
     
     public GreetingTemplateRepository()
     {
-        GreetingTemplates = new Dictionary<int, Greeting>();
+        var christmasTemplate = new ChristmasGreeting
+        {
+            Message = "A generic christmas greeting!",
+            Timestamp = DateTime.Now,
+            ChristmasPresent = "DSAN13284",
+        };
+        SaveGreetingTemplate(1, christmasTemplate);           //Save a greeting in the repo
+
+        var newYearGreetingTemplate = new NewYearGreeting
+        {
+            Message = "A generic new year greeting!",
+            Timestamp = DateTime.Now,
+            Year = 2022,
+        };
+        SaveGreetingTemplate(2, newYearGreetingTemplate);       //Save another greeting in the repo
     }
 
     public Greeting GetGreetingTemplate(int id)
