@@ -9,7 +9,7 @@ public class Greeting
 
     public virtual string GetMessage()
     {
-        return $"{Timestamp}:\n{Message}";
+        return $"\n{Timestamp}:\n{Message}";
     }
 
     public void WriteMessage()

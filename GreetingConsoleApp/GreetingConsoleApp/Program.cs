@@ -6,9 +6,23 @@ public class Program                                                    //This c
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {        
-        PrintTemplatesWithLinq();
+        WriteGreetingToDisk();
 
         Console.WriteLine("\nDone!\n");
+    }
+
+    public static void WriteGreetingToDisk()
+    {
+        var greeting = new Greeting
+        {
+            From = "Keen",
+            To = "Anton",
+            Timestamp = DateTime.Now,
+            Message = "This will be written to disk",
+            GreetingWriter = new FileGreetingWriter(),
+        };
+
+        greeting.WriteMessage();
     }
 
     public static void PrintTemplatesWithLinq()
