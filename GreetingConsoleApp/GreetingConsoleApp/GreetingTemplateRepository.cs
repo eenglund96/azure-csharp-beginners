@@ -51,7 +51,7 @@ public class GreetingTemplateRepository
         return templates;
     }
 
-    public IEnumerable<Greeting> GetGreetingTemplatesByLengthLambdaWithExpression(int length)
+    public IEnumerable<Greeting> GetGreetingTemplatesByLengthWithLambda(int length)
     {
         //this is a lambda expression: Where(t => t.Value.Message.Length >= length)
         //we chain multple method calls to the output of the previous step like this:

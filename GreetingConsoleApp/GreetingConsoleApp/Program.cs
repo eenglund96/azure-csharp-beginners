@@ -16,7 +16,7 @@ public class Program                                                    //This c
         //Get by length
         var length = 29;
         var templatesByLengthWithLinq = greetingTemplateRepository.GetGreetingTemplatesByLengthWithLinq(length);
-        var templatesByLengthWithLambda = greetingTemplateRepository.GetGreetingTemplatesByLengthLambdaWithExpression(length);
+        var templatesByLengthWithLambda = greetingTemplateRepository.GetGreetingTemplatesByLengthWithLambda(length);
         var templatesByLengthWithForeach = greetingTemplateRepository.GetGreetingTemplatesByLengthWithForeach(length);
 
         Console.WriteLine($"\nMessages >= {length} - LINQ");
