@@ -5,9 +5,48 @@ public class Program                                                    //This c
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {
         Console.WriteLine("Available templates:");
+        
+        PrintTemplatesWithLinq();
 
+        Console.WriteLine("\nDone!\n");
+    }
+
+    public static void ProcessGreeting(Greeting greeting)
+    {
+        greeting.WriteMessage();
+    }
+
+    public static void PrintTemplatesWithLinq()
+    {        
         var repo = InitGreetingTemplateRepository();
 
+        var length = 29;
+        var templatesWithLinq = repo.GetGreetingTemplatesWithLongMessageWithLinq(length);
+        var templatesWithLambda = repo.GetGreetingTemplatesWithLongMessageWithLambdaExpression(length);
+        var templatesWithForeach = repo.GetGreetingTemplatesWithLongMessageWithForeach(length);
+
+        Console.WriteLine("\nResult with LINQ");
+        foreach (var t in templatesWithLinq)
+        {
+            Console.WriteLine(t.Value.GetMessage());
+        }
+
+        Console.WriteLine("\nResult with Lambda expression");
+        foreach (var t in templatesWithLambda)
+        {
+            Console.WriteLine(t.Value.GetMessage());
+        }
+
+        Console.WriteLine("\nResult with foreach");
+        foreach (var t in templatesWithForeach)
+        {
+            Console.WriteLine(t.Value.GetMessage());
+        }
+    }
+
+    public static void PrintTemplate()
+    {
+        var repo = InitGreetingTemplateRepository();
         foreach (var template in repo.GreetingTemplates)
         {
             Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
@@ -25,13 +64,6 @@ public class Program                                                    //This c
         {
             Console.WriteLine("Failed to print template");
         }
-
-        Console.WriteLine("\nDone!\n");
-    }
-
-    public static void ProcessGreeting(Greeting greeting)
-    {
-        greeting.WriteMessage();
     }
 
     public static GreetingTemplateRepository InitGreetingTemplateRepository()
