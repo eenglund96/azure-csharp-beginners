@@ -2,6 +2,8 @@
 
 public class Program                                                    //This class contains the first code that is executed when the program is started
 {
+    private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
+
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {
         Console.WriteLine("Available templates:");
@@ -11,19 +13,12 @@ public class Program                                                    //This c
         Console.WriteLine("\nDone!\n");
     }
 
-    public static void ProcessGreeting(Greeting greeting)
-    {
-        greeting.WriteMessage();
-    }
-
     public static void PrintTemplatesWithLinq()
     {        
-        var repo = InitGreetingTemplateRepository();
-
         var length = 29;
-        var templatesWithLinq = repo.GetGreetingTemplatesWithLongMessageWithLinq(length);
-        var templatesWithLambda = repo.GetGreetingTemplatesWithLongMessageWithLambdaExpression(length);
-        var templatesWithForeach = repo.GetGreetingTemplatesWithLongMessageWithForeach(length);
+        var templatesWithLinq = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithLinq(length);
+        var templatesWithLambda = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithLambdaExpression(length);
+        var templatesWithForeach = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithForeach(length);
 
         Console.WriteLine("\nResult with LINQ");
         foreach (var t in templatesWithLinq)
@@ -46,8 +41,7 @@ public class Program                                                    //This c
 
     public static void PrintTemplate()
     {
-        var repo = InitGreetingTemplateRepository();
-        foreach (var template in repo.GreetingTemplates)
+        foreach (var template in greetingTemplateRepository.GreetingTemplates)
         {
             Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
         }
@@ -57,7 +51,7 @@ public class Program                                                    //This c
         try
         {
             var id = int.Parse(Console.ReadLine());
-            var greeting = repo.GetGreetingTemplate(id);
+            var greeting = greetingTemplateRepository.GetGreetingTemplate(id);
             Console.WriteLine(greeting.GetMessage());
         }
         catch
@@ -66,27 +60,9 @@ public class Program                                                    //This c
         }
     }
 
-    public static GreetingTemplateRepository InitGreetingTemplateRepository()
+    public static void ProcessGreeting(Greeting greeting)
     {
-        var repo = new GreetingTemplateRepository();
-
-        var christmasTemplate = new ChristmasGreeting
-        {
-            Message = "A generic christmas greeting!",
-            Timestamp = DateTime.Now,
-            ChristmasPresent = "DSAN13284",
-        };
-        repo.SaveGreetingTemplate(1, christmasTemplate);           //Save a greeting in the repo
-
-        var newYearGreetingTemplate = new NewYearGreeting
-        {
-            Message = "A generic new year greeting!",
-            Timestamp = DateTime.Now,
-            Year = 2022,
-        };
-        repo.SaveGreetingTemplate(2, newYearGreetingTemplate);       //Save another greeting in the repo
-
-        return repo;
+        greeting.WriteMessage();
     }
 
     public static void ProcessGreetings(List<Greeting> greetings)
