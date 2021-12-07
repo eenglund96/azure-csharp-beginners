@@ -39,41 +39,102 @@ public class GreetingTemplateRepository
         throw new Exception($"Failed to save GreetingTemplate, key {id} already exists");
     }
 
-    public Dictionary<int, Greeting> GetGreetingTemplatesWithLongMessageWithLinq(int length)
+    public IEnumerable<Greeting> GetGreetingTemplatesByLengthWithLinq(int length)
     {
         //This is a simple LINQ query that retrieves all items in GreetingTemplates that has a message with length longer that the input parameter "length"
         //Look at the key words in the query ("from", "in", "where", "select")
-        //
         //Check out the type of "templates". A LINQ query always returns an IEnumerable<T>
-        IEnumerable<KeyValuePair<int, Greeting>> templates = from t in GreetingTemplates                             //which collection do we want to query? Associate each value in the collection with a temp variable (in this case "t") that we can refer to in our query
-                                                             where t.Value.Message.Length >= length                  //this is our filter: where [condition == true]
-                                                             select t;                                               //what do we want to retrieve from the collection, in this case we return the entire item. Could also return only some properties in t. Test it out!
+        var templates = from t in GreetingTemplates                     //which collection do we want to query? Associate each value in the collection with a temp variable (in this case "t") that we can refer to in our query
+                        where t.Value.Message.Length >= length          //this is our filter: where [condition == true]
+                        select t.Value;                                 //what do we want to retrieve from the collection, in this case we return the entire item. Could also return only some properties in t. Test it out!
 
-        Dictionary<int, Greeting> dictionary = new Dictionary<int, Greeting>(templates);                             //need to convert template to a Dictionary<int, Greeting> to match our return type
-        return dictionary;
+        return templates;
     }
 
-    public Dictionary<int, Greeting> GetGreetingTemplatesWithLongMessageWithLambdaExpression(int length)
+    public IEnumerable<Greeting> GetGreetingTemplatesByLengthLambdaWithExpression(int length)
     {
         //this is a lambda expression: Where(t => t.Value.Message.Length >= length)
+        //we chain multple method calls to the output of the previous step like this:
+        //myCollection.Where(...).Select(...)
+        //GreetingTemplates is our collection
+        //.Where(t => t.Value.Message.Length >= length) is our filter
+        //.Select(t => t.Value) states what we should extract from our collection, use this to project the objects in the collection to another type of object
         //same return type: IEnumerable<T>
-        IEnumerable<KeyValuePair<int, Greeting>> templates = GreetingTemplates.Where(t => t.Value.Message.Length >= length);
-
-        Dictionary<int, Greeting> dictionary = new Dictionary<int, Greeting>(templates);                             //need to convert template to a Dictionary<int, Greeting> to match our return type
-        return dictionary;
+        var templates = GreetingTemplates.Where(t => t.Value.Message.Length >= length).Select(t => t.Value);
+        return templates;
     }
 
-    public Dictionary<int, Greeting> GetGreetingTemplatesWithLongMessageWithForeach(int length)
+    public IEnumerable<Greeting> GetGreetingTemplatesByLengthWithForeach(int length)
     {
-        var dictionary = new Dictionary<int, Greeting>();                                                            //needs to match our return type
+        var templates = new List<Greeting>();                                                            //needs to match our return type
         foreach (var t in GreetingTemplates)
         {
             if (t.Value.Message.Length >= length)
             {
-                dictionary.Add(t.Key, t.Value);
+                templates.Add(t.Value);
             }
         }
 
-        return dictionary;
+        return templates;               //templates is a List<T> which inherits from IEnumerable<T>, no need to cast to our return type: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1?view=net-6.0
+    }
+
+    public IEnumerable<Greeting> GetGreetingTemplatesBySearchStringWithLinq(string searchString)
+    {
+        var templates = from t in GreetingTemplates
+                        where t.Value.Message.Contains(searchString)
+                        select t.Value;
+
+        return templates;
+    }
+
+    public IEnumerable<Greeting> GetGreetingTemplatesBySearchStringWithLambda(string searchString)
+    {
+        var templates = GreetingTemplates.Where(t => t.Value.Message.Contains(searchString))
+                                         .Select(t => t.Value);                                 //sometimes it's more readable to write each part on a new row
+        return templates;
+    }
+
+    public IEnumerable<Greeting> GetGreetingTemplatesBySearchStringWithForeach(string searchString)
+    {
+        var templates = new List<Greeting>();
+        foreach (var t in GreetingTemplates)
+        {
+            if (t.Value.Message.Contains(searchString))
+            {
+                templates.Add(t.Value);
+            }
+        }
+
+        return templates;
+    }
+ 
+    public IEnumerable<Greeting> GetGreetingTemplatesByTypeWithLinq(Type type)
+    {
+        var templates = from t in GreetingTemplates
+                        where t.Value.GetType() == type
+                        select t.Value;
+
+        return templates;
+    }
+
+    public IEnumerable<Greeting> GetGreetingTemplatesByTypeWithLambda(Type type)
+    {
+        var templates = GreetingTemplates.Where(t => t.Value.GetType() == type)
+                                         .Select(t => t.Value);                                 
+        return templates;
+    }
+
+    public IEnumerable<Greeting> GetGreetingTemplatesByTypeWithForeach(Type type)
+    {
+        var templates = new List<Greeting>();
+        foreach (var t in GreetingTemplates)
+        {
+            if (t.Value.GetType() == type)
+            {
+                templates.Add(t.Value);
+            }
+        }
+
+        return templates;
     }
 }

@@ -5,9 +5,7 @@ public class Program                                                    //This c
     private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
-    {
-        Console.WriteLine("Available templates:");
-        
+    {        
         PrintTemplatesWithLinq();
 
         Console.WriteLine("\nDone!\n");
@@ -15,32 +13,83 @@ public class Program                                                    //This c
 
     public static void PrintTemplatesWithLinq()
     {        
+        //Get by length
         var length = 29;
-        var templatesWithLinq = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithLinq(length);
-        var templatesWithLambda = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithLambdaExpression(length);
-        var templatesWithForeach = greetingTemplateRepository.GetGreetingTemplatesWithLongMessageWithForeach(length);
+        var templatesByLengthWithLinq = greetingTemplateRepository.GetGreetingTemplatesByLengthWithLinq(length);
+        var templatesByLengthWithLambda = greetingTemplateRepository.GetGreetingTemplatesByLengthLambdaWithExpression(length);
+        var templatesByLengthWithForeach = greetingTemplateRepository.GetGreetingTemplatesByLengthWithForeach(length);
 
-        Console.WriteLine("\nResult with LINQ");
-        foreach (var t in templatesWithLinq)
+        Console.WriteLine($"\nMessages >= {length} - LINQ");
+        foreach (var t in templatesByLengthWithLinq)
         {
-            Console.WriteLine(t.Value.GetMessage());
+            Console.WriteLine(t.GetMessage());
         }
 
-        Console.WriteLine("\nResult with Lambda expression");
-        foreach (var t in templatesWithLambda)
+        Console.WriteLine($"\nMessages >= {length} - Lambda expression");
+        foreach (var t in templatesByLengthWithLambda)
         {
-            Console.WriteLine(t.Value.GetMessage());
+            Console.WriteLine(t.GetMessage());
         }
 
-        Console.WriteLine("\nResult with foreach");
-        foreach (var t in templatesWithForeach)
+        Console.WriteLine($"\nMessages >= {length} - Foreach");
+        foreach (var t in templatesByLengthWithForeach)
         {
-            Console.WriteLine(t.Value.GetMessage());
+            Console.WriteLine(t.GetMessage());
+        }
+
+        //Get by search string
+        var searchString = "year";
+        var templatesBySearchStringWithLinq = greetingTemplateRepository.GetGreetingTemplatesBySearchStringWithLinq(searchString);
+        var templatesBySearchStringWithLambda = greetingTemplateRepository.GetGreetingTemplatesBySearchStringWithLambda(searchString);
+        var templatesBySearchStringWithForeach = greetingTemplateRepository.GetGreetingTemplatesBySearchStringWithForeach(searchString);
+
+        Console.WriteLine($"\nMessages containing '{searchString}' - LINQ");
+        foreach (var t in templatesBySearchStringWithLinq)
+        {
+            Console.WriteLine(t.GetMessage());
+        }
+
+        Console.WriteLine($"\nMessages containing '{searchString}' - Lambda");
+        foreach (var t in templatesBySearchStringWithLambda)
+        {
+            Console.WriteLine(t.GetMessage());
+        }
+
+        Console.WriteLine($"\nMessages containing '{searchString}' - Foreach");
+        foreach (var t in templatesBySearchStringWithForeach)
+        {
+            Console.WriteLine(t.GetMessage());
+        }
+
+        //Get by type
+        var type = typeof(ChristmasGreeting);
+        var templatesByTypeWithLinq = greetingTemplateRepository.GetGreetingTemplatesByTypeWithLinq(type);
+        var templatesByTypeWithLambda = greetingTemplateRepository.GetGreetingTemplatesByTypeWithLambda(type);
+        var templatesByTypeWithForeach = greetingTemplateRepository.GetGreetingTemplatesByTypeWithForeach(type);
+
+        Console.WriteLine($"\nMessages of type '{type}' - LINQ");
+        foreach (var t in templatesByTypeWithLinq)
+        {
+            Console.WriteLine(t.GetMessage());
+        }
+
+        Console.WriteLine($"\nMessages of type '{type}' - Lambda");
+        foreach (var t in templatesByTypeWithLambda)
+        {
+            Console.WriteLine(t.GetMessage());
+        }
+
+        Console.WriteLine($"\nMessages of type '{type}' - Foreach");
+        foreach (var t in templatesByTypeWithForeach)
+        {
+            Console.WriteLine(t.GetMessage());
         }
     }
 
     public static void PrintTemplate()
     {
+        Console.WriteLine("Available templates:");
+
         foreach (var template in greetingTemplateRepository.GreetingTemplates)
         {
             Console.WriteLine($"ID: {template.Key} - Message: {template.Value.Message}");
