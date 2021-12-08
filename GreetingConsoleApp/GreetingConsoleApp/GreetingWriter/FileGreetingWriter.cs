@@ -26,4 +26,9 @@ public class FileGreetingWriter : IGreetingWriter
         Console.WriteLine(message);
         _logger.Write(Serilog.Events.LogEventLevel.Information, $"{message}\n");
     }
+
+    public void Write(Greeting greeting)
+    {
+        Write(greeting.GetMessage());
+    }
 }

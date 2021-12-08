@@ -6,4 +6,9 @@ public class BlackWhiteGreetingWriter : IGreetingWriter
     {
         Console.WriteLine(message);
     }
+
+    public void Write(Greeting greeting)
+    {
+        Write(greeting.GetMessage());
+    }
 }

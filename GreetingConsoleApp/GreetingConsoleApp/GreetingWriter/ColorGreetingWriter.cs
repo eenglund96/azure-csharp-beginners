@@ -9,4 +9,9 @@ public class ColorGreetingWriter : IGreetingWriter
         Console.WriteLine(message);
         Console.ForegroundColor = previousColor;
     }
+
+    public void Write(Greeting greeting)
+    {
+        Write(greeting.GetMessage());
+    }
 }

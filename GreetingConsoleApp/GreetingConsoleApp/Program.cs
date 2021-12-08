@@ -5,7 +5,7 @@ namespace GreetingConsoleApp;                                           //Everyt
 public class Program                                                    //This class contains the first code that is executed when the program is started
 {
     private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
-    private static IGreetingWriter _greetingWriter = new FileGreetingWriter();
+    private static IGreetingWriter _greetingWriter;
 
     private static Settings _settings;
 
@@ -19,6 +19,8 @@ public class Program                                                    //This c
 
         // Get values from the config given their key and their target type.
         _settings = config.GetRequiredSection("Settings").Get<Settings>();      //Get the section named "Settings" in our settings file and deserialize it to the class property _settings of type Settings
+        
+        _greetingWriter = CreateGreetingWriter();
     }
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
@@ -59,10 +61,9 @@ public class Program                                                    //This c
             To = "Anton",
             Timestamp = DateTime.Now,
             Message = "This will be written to disk",
-            GreetingWriter = new FileGreetingWriter(),
         };
 
-        greeting.WriteMessage();
+        _greetingWriter.Write(greeting);
     }
 
     public static void PrintTemplatesWithLinq()
@@ -165,7 +166,7 @@ public class Program                                                    //This c
 
     public static void ProcessGreeting(Greeting greeting)
     {
-        greeting.WriteMessage();
+        _greetingWriter.Write(greeting);
     }
 
     public static void ProcessGreetings(List<Greeting> greetings)
@@ -189,7 +190,6 @@ public class Program                                                    //This c
             {
                 Message = $"This is greeting no {i}",
                 Timestamp = DateTime.Now,
-                GreetingWriter = new BlackWhiteGreetingWriter(),
             };
             greetings.Add(greeting);
         }
