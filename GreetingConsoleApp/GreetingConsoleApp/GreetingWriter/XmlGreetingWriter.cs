@@ -9,12 +9,7 @@ public class XmlGreetingWriter : IGreetingWriter
     private readonly string _path;
     public XmlGreetingWriter()
     {
-        //duplicate IConfiguration code here, not optimal but we'll run with it for now
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var settings = config.GetRequiredSection("Settings").Get<Settings>();
+        var settings = Program.InitializeSettings();
         _path = settings.GreetingWriterOutputFilePath;
     }
 

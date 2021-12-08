@@ -8,12 +8,7 @@ public class JsonGreetingWriter : IGreetingWriter
     private static readonly string _path;
     static JsonGreetingWriter()
     {
-        //duplicate IConfiguration code here, not optimal but we'll run with it for now
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var settings = config.GetRequiredSection("Settings").Get<Settings>();
+        var settings = Program.InitializeSettings();
         _path = settings.GreetingWriterOutputFilePath;
     }
 

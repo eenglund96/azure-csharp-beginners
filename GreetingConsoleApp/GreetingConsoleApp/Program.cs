@@ -6,20 +6,11 @@ public class Program                                                    //This c
 {
     private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
     private static IGreetingWriter _greetingWriter;
-
     private static Settings _settings;
 
     static Program()
     {
-        //Lets read our configuration from appsettings.json
-        // Build a config object, using JSON provider.
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")                        //appsettings.json is our settings file
-            .Build();
-
-        // Get values from the config given their key and their target type.
-        _settings = config.GetRequiredSection("Settings").Get<Settings>();      //Get the section named "Settings" in our settings file and deserialize it to the class property _settings of type Settings
-        
+        _settings = InitializeSettings();
         _greetingWriter = CreateGreetingWriter();
     }
 
@@ -31,6 +22,19 @@ public class Program                                                    //This c
 
         Console.WriteLine("\nDone!\n");
     }
+
+    public static Settings InitializeSettings()
+    {
+        //Lets read our configuration from appsettings.json
+        // Build a config object, using JSON provider.
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")                        //appsettings.json is our settings file
+            .Build();
+
+        // Get values from the config given their key and their target type.
+        var settings = config.GetRequiredSection("Settings").Get<Settings>();      //Get the section named "Settings" in our settings file and deserialize it to the class property _settings of type Settings
+        return settings;
+    } 
 
     public static void WriteGreetingWithConfiguredWriter(IEnumerable<Greeting> greetings)
     {
