@@ -16,9 +16,11 @@ public class Program                                                    //This c
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {    
-        var greetings = GenerateGreetings(100);
+        //var greetings = GenerateGreetings(100);
 
-        WriteGreetingWithConfiguredWriter(greetings);
+        //WriteGreetingWithConfiguredWriter(greetings);
+
+        PrintGreetingsFromFile();
 
         Console.WriteLine("\nDone!\n");
     }
@@ -35,6 +37,22 @@ public class Program                                                    //This c
         var settings = config.GetRequiredSection("Settings").Get<Settings>();      //Get the section named "Settings" in our settings file and deserialize it to the class property _settings of type Settings
         return settings;
     } 
+
+    public static void PrintGreetingsFromFile()
+    {
+        var greetingReader = new GreetingReader();
+        var greetings = greetingReader.ReadGreetingsFromFile("greetings.csv.20211208163845.json");
+        
+        var greetingWriter = new BlackWhiteGreetingWriter();
+        if (greetings.Any())
+        {
+            greetingWriter.Write(greetings);
+        }
+        else
+        {
+            Console.WriteLine("Found 0 greetings in file");
+        }
+    }
 
     public static void WriteGreetingWithConfiguredWriter(IEnumerable<Greeting> greetings)
     {
