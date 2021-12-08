@@ -1,14 +1,54 @@
-﻿namespace GreetingConsoleApp;                                           //Everything under the same namespace can reference each other without additional code or config
+﻿using Microsoft.Extensions.Configuration;
+
+namespace GreetingConsoleApp;                                           //Everything under the same namespace can reference each other without additional code or config
 
 public class Program                                                    //This class contains the first code that is executed when the program is started
 {
     private static GreetingTemplateRepository greetingTemplateRepository = new GreetingTemplateRepository();
+    private static IGreetingWriter _greetingWriter = new FileGreetingWriter();
+
+    private static Settings _settings;
+
+    static Program()
+    {
+        //Lets read our configuration from appsettings.json
+        // Build a config object, using JSON provider.
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")                        //appsettings.json is our settings file
+            .Build();
+
+        // Get values from the config given their key and their target type.
+        _settings = config.GetRequiredSection("Settings").Get<Settings>();      //Get the section named "Settings" in our settings file and deserialize it to the class property _settings of type Settings
+    }
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
-    {        
-        WriteGreetingToDisk();
+    {    
+        var greeting = new Greeting
+        {
+            Message = "Hi there!",
+            Timestamp = DateTime.Now,
+        };
+
+        WriteGreetingWithConfiguredWriter(greeting);
 
         Console.WriteLine("\nDone!\n");
+    }
+
+    public static void WriteGreetingWithConfiguredWriter(Greeting greeting)
+    {
+        var greetingWriter = CreateGreetingWriter();
+        greetingWriter.Write(greeting.GetMessage());
+    }
+
+    public static IGreetingWriter CreateGreetingWriter()
+    {
+        if (_settings.GreetingWriterClassName?.Equals("BlackWhiteGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
+            return new BlackWhiteGreetingWriter();
+        
+        if (_settings.GreetingWriterClassName?.Equals("ColorGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)              //use a case insensitive string comparison
+            return new ColorGreetingWriter();
+
+        return new FileGreetingWriter();        //this is our default writer
     }
 
     public static void WriteGreetingToDisk()
