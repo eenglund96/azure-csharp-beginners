@@ -52,8 +52,11 @@ public class Program                                                    //This c
         if (_settings.GreetingWriterClassName?.Equals("JsonGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
             return new JsonGreetingWriter();
 
-        if (_settings.GreetingWriterClassName?.Equals("XmlGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
+        if (_settings.GreetingWriterClassName?.Equals("XmlGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          
             return new XmlGreetingWriter();
+
+        if (_settings.GreetingWriterClassName?.Equals("CsvGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          
+            return new CsvGreetingWriter();
         
         if (_settings.GreetingWriterClassName?.Equals("ColorGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)              //use a case insensitive string comparison
             return new ColorGreetingWriter();
