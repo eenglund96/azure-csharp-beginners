@@ -25,32 +25,36 @@ public class Program                                                    //This c
 
     static void Main(string[] args)                                     //The Main method is a special method that is executed when the program is started
     {    
-        var greeting = new Greeting
-        {
-            Message = "Hi there!",
-            Timestamp = DateTime.Now,
-        };
+        var greetings = GenerateGreetings(100);
 
-        WriteGreetingWithConfiguredWriter(greeting);
+        WriteGreetingWithConfiguredWriter(greetings);
 
         Console.WriteLine("\nDone!\n");
     }
 
-    public static void WriteGreetingWithConfiguredWriter(Greeting greeting)
+    public static void WriteGreetingWithConfiguredWriter(IEnumerable<Greeting> greetings)
     {
         var greetingWriter = CreateGreetingWriter();
-        greetingWriter.Write(greeting.GetMessage());
+        greetingWriter.Write(greetings);
+    }
+
+    public static void WriteGreetingWithConfiguredWriter(Greeting greeting)
+    {
+        WriteGreetingWithConfiguredWriter(new List<Greeting> { greeting });                 //reuse the other method to avoid writing same logic twice
     }
 
     public static IGreetingWriter CreateGreetingWriter()
     {
-        if (_settings.GreetingWriterClassName?.Equals("BlackWhiteGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
-            return new BlackWhiteGreetingWriter();
+        if (_settings.GreetingWriterClassName?.Equals("JsonGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
+            return new JsonGreetingWriter();
         
         if (_settings.GreetingWriterClassName?.Equals("ColorGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)              //use a case insensitive string comparison
             return new ColorGreetingWriter();
 
-        return new FileGreetingWriter();        //this is our default writer
+        if (_settings.GreetingWriterClassName?.Equals("FileGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)              //use a case insensitive string comparison
+            return new FileGreetingWriter();
+
+        return new BlackWhiteGreetingWriter();        //this is our default writer
     }
 
     public static void WriteGreetingToDisk()

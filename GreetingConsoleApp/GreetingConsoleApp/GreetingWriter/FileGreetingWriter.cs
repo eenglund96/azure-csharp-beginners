@@ -31,4 +31,12 @@ public class FileGreetingWriter : IGreetingWriter
     {
         Write(greeting.GetMessage());
     }
+
+    public void Write(IEnumerable<Greeting> greetings)
+    {
+        foreach (var greeting in greetings)
+        {
+            Write(greeting);
+        }
+    }
 }
