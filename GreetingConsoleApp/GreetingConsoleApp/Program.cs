@@ -47,6 +47,9 @@ public class Program                                                    //This c
     {
         if (_settings.GreetingWriterClassName?.Equals("JsonGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
             return new JsonGreetingWriter();
+
+        if (_settings.GreetingWriterClassName?.Equals("XmlGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)          //Notice the ? after the property name, this helps us with null check, it _settings.GreetingWriterClassName if null, this statement will be false. 
+            return new XmlGreetingWriter();
         
         if (_settings.GreetingWriterClassName?.Equals("ColorGreetingWriter", StringComparison.InvariantCultureIgnoreCase) == true)              //use a case insensitive string comparison
             return new ColorGreetingWriter();
@@ -194,6 +197,8 @@ public class Program                                                    //This c
             {
                 Message = $"This is greeting no {i}",
                 Timestamp = DateTime.Now,
+                From = "Keen",
+                To = "Anton",
             };
             greetings.Add(greeting);
         }
