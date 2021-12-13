@@ -11,13 +11,13 @@ namespace GreetingService.Infrastructure
 {
     public class FileGreetingRepository : IGreetingRepository
     {
-        private readonly string _filePath = "greeting.json";
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true, };
+        private readonly string _filePath;
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true, };        //new() is short hand for new JsonSerializerOptions
 
         public FileGreetingRepository(string filePath)
         {
-            if (!File.Exists(_filePath))
-                File.WriteAllText(_filePath, "[]");     //init file with empty json array
+            if (!File.Exists(filePath))
+                File.WriteAllText(filePath, "[]");     //init file with empty json array
 
             _filePath = filePath;
         }

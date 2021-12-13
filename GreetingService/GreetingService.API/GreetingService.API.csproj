@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GreetingService.Core\GreetingService.Core.csproj" />
+    <ProjectReference Include="..\GreetingService.Infrastructure\GreetingService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
