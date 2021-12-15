@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreetingService.API.Controllers
 {
     [Route("api/[controller]")]
+    [BasicAuth]
     [ApiController]
     public class GreetingController : ControllerBase
     {
@@ -20,7 +21,6 @@ namespace GreetingService.API.Controllers
 
         // GET: api/<GreetingController>
         [HttpGet]
-        [BasicAuth]
         public IEnumerable<Greeting> Get()
         {
             return _greetingRepository.Get();
@@ -28,15 +28,17 @@ namespace GreetingService.API.Controllers
 
         // GET api/<GreetingController>/5
         [HttpGet("{id}")]
-        [BasicAuth]
-        public Greeting Get(Guid id)
+        public IActionResult Get(Guid id)
         {
-            return _greetingRepository.Get(id);
+            var greeting = _greetingRepository.Get(id);
+            if (greeting == null)
+                return NotFound();
+
+            return Ok(greeting);
         }
 
         // POST api/<GreetingController>
         [HttpPost]
-        [BasicAuth]
         public void Post([FromBody] Greeting greeting)
         {
             _greetingRepository.Create(greeting);
@@ -44,7 +46,6 @@ namespace GreetingService.API.Controllers
 
         // PUT api/<GreetingController>
         [HttpPut]
-        [BasicAuth]
         public void Put([FromBody] Greeting greeting)
         {
             _greetingRepository.Update(greeting);
