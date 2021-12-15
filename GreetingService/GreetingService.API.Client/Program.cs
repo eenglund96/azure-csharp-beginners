@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace GreetingService.API.Client;
 
@@ -11,6 +13,7 @@ public class GreetingServiceClient
     private const string _getGreetingCommand = "get greeting ";
     private const string _writeGreetingCommand = "write greeting ";
     private const string _updateGreetingCommand = "update greeting ";
+    private const string _exportGreetingsCommand = "export greetings";
     private static string _from = "Batman";
     private static string _to = "Superman";
 
@@ -34,6 +37,7 @@ public class GreetingServiceClient
             Console.WriteLine($"{_getGreetingCommand} [id]");
             Console.WriteLine($"{_writeGreetingCommand} [message]");
             Console.WriteLine($"{_updateGreetingCommand} [id] [message]");
+            Console.WriteLine(_exportGreetingsCommand);
 
             Console.WriteLine("\nWrite command and press [enter] to execute");
 
@@ -81,6 +85,10 @@ public class GreetingServiceClient
                     Console.WriteLine($"{idPart} is not a valid GUID");
                 }
             }
+            else if (command.Equals(_exportGreetingsCommand, StringComparison.OrdinalIgnoreCase))
+            {
+                await ExportGreetingsAsync();
+            }
             else
             {
                 Console.WriteLine("Command not recognized\n");
@@ -94,7 +102,7 @@ public class GreetingServiceClient
     /// In general use async methods if possible and follow the principle of "async all the way"
     /// </summary>
     /// <returns></returns>
-    private static async Task GetGreetingsAsync()
+    private static async Task GetGreetingsAsync()                                               //common naming convention is to add Async suffix to async method names
     {
         try
         {
@@ -174,5 +182,24 @@ public class GreetingServiceClient
         {
             Console.WriteLine($"Update greeting failed: {e.Message}\n");
         }
+    }
+
+    private static async Task ExportGreetingsAsync()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5020/api/greeting");
+        response.EnsureSuccessStatusCode();                                                 //throws exception if HTTP response status is not a success status
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var greetings = JsonSerializer.Deserialize<List<Greeting>>(responseBody);
+
+        var filename = "greetingExport.xml";
+        var xmlWriterSettings = new XmlWriterSettings
+        {
+            Indent = true,
+        };
+        using var xmlWriter = XmlWriter.Create(filename, xmlWriterSettings);
+        var serializer = new XmlSerializer(typeof(List<Greeting>));                             //this xml serializer does not support serializing interfaces, need to convert to a concrete class
+        serializer.Serialize(xmlWriter, greetings);                                   //convert our greetings of type IEnumerable (interface) to List (concrete class)
+
+        Console.WriteLine($"Exported {greetings.Count()} greetings to {filename}\n");
     }
 }
