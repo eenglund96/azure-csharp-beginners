@@ -21,6 +21,8 @@ builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
     return new FileGreetingRepository(config["FileRepositoryFilePath"]);
 });
 
+builder.Services.AddScoped<IUserService, HardCodedUserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

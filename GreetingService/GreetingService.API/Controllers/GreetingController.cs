@@ -1,4 +1,5 @@
-﻿using GreetingService.Core.Entities;
+﻿using GreetingService.API.Authentication;
+using GreetingService.Core.Entities;
 using GreetingService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace GreetingService.API.Controllers
 
         // GET: api/<GreetingController>
         [HttpGet]
+        [BasicAuth]
         public IEnumerable<Greeting> Get()
         {
             return _greetingRepository.Get();
@@ -26,6 +28,7 @@ namespace GreetingService.API.Controllers
 
         // GET api/<GreetingController>/5
         [HttpGet("{id}")]
+        [BasicAuth]
         public Greeting Get(Guid id)
         {
             return _greetingRepository.Get(id);
@@ -33,6 +36,7 @@ namespace GreetingService.API.Controllers
 
         // POST api/<GreetingController>
         [HttpPost]
+        [BasicAuth]
         public void Post([FromBody] Greeting greeting)
         {
             _greetingRepository.Create(greeting);
@@ -40,6 +44,7 @@ namespace GreetingService.API.Controllers
 
         // PUT api/<GreetingController>
         [HttpPut]
+        [BasicAuth]
         public void Put([FromBody] Greeting greeting)
         {
             _greetingRepository.Update(greeting);
