@@ -13,7 +13,7 @@ namespace GreetingService.API.Controllers
         [HttpGet]
         public IEnumerable<Greeting> Get()
         {
-            return new Greeting[] 
+            return new Greeting[]
             {
                 new Greeting
                 {
@@ -49,9 +49,9 @@ namespace GreetingService.API.Controllers
             Console.WriteLine($"Create: {greeting.Message}");
         }
 
-        // PUT api/<GreetingController>/5
-        [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Greeting greeting)
+        // PUT api/<GreetingController>
+        [HttpPut]
+        public void Put([FromBody] Greeting greeting)
         {
             Console.WriteLine($"Update: {greeting.Message}");
         }
