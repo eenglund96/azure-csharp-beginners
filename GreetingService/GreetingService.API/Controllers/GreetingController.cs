@@ -28,6 +28,8 @@ namespace GreetingService.API.Controllers
 
         // GET api/<GreetingController>/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Greeting))]        //when we return IActionResult instead of Greeting, there is no way for swagger to know what the return type is, we need to explicitly state what it will return
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(Guid id)
         {
             var greeting = _greetingRepository.Get(id);
@@ -38,17 +40,37 @@ namespace GreetingService.API.Controllers
         }
 
         // POST api/<GreetingController>
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [HttpPost]
-        public void Post([FromBody] Greeting greeting)
+        public IActionResult Post([FromBody] Greeting greeting)
         {
-            _greetingRepository.Create(greeting);
+            try
+            {
+                _greetingRepository.Create(greeting);
+                return Accepted();
+            }
+            catch                       //any exception will result in 409 Conflict which might not be true but we'll use this for now
+            {
+                return Conflict();
+            }
         }
 
         // PUT api/<GreetingController>
         [HttpPut]
-        public void Put([FromBody] Greeting greeting)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put([FromBody] Greeting greeting)
         {
-            _greetingRepository.Update(greeting);
+            try
+            {
+                _greetingRepository.Update(greeting);
+                return Accepted();
+            }
+            catch
+            {
+                return NotFound($"Greeting with {greeting.Id} not found");
+            }
         }
     }
 }

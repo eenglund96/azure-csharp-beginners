@@ -12,6 +12,6 @@ namespace GreetingService.Core.Entities
         public string Message { get; set; }
         public string From { get; set; }
         public string To { get; set; }
-        public DateTime Timestamp { get; } = DateTime.Now;
+        public DateTime Timestamp { get; set;  } = DateTime.Now;
     }
 }
