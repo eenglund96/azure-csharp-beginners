@@ -38,9 +38,9 @@ namespace GreetingService.API.Controllers
             _greetingRepository.Create(greeting);
         }
 
-        // PUT api/<GreetingController>/5
-        [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Greeting greeting)
+        // PUT api/<GreetingController>
+        [HttpPut]
+        public void Put([FromBody] Greeting greeting)
         {
             _greetingRepository.Update(greeting);
         }
