@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "387d9b22-0269-490f-89b8-f724764d2e63",
+    "Message": "Hello",
+    "From": "Keen",
+    "To": "Anton",
+    "Timestamp": "2021-12-15T10:26:50.7692184+01:00"
+  },
+  {
+    "Id": "00000000-0000-0000-0000-000000000000",
+    "Message": "Hello",
+    "From": "Batman",
+    "To": "",
+    "Timestamp": "2021-12-15T10:26:50.7696292+01:00"
+  },
+  {
+    "Id": "c0b869fa-3b72-4eae-90ca-67dab781612f",
+    "Message": "tes",
+    "From": "\u0027",
+    "To": "",
+    "Timestamp": "2021-12-15T10:26:50.7696368+01:00"
+  },
+  {
+    "Id": "8c84df49-bdbb-414b-abef-f8305d0093f9",
+    "Message": "hdsadsa",
+    "From": "dsa",
+    "To": "gfd",
+    "Timestamp": "2021-12-15T10:26:50.6598159+01:00"
+  }
+]
