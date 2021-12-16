@@ -247,6 +247,7 @@ public class GreetingServiceClient
         //I cheat by running multiple calls in parallel for maximum throughput - we will be limited by our cpu, wifi, internet speeds
         //This is a bit advanced and the syntax is new with lamdas - don't worry if you don't understand all of it.
         //I always copy this from the internet and adapt to my needs
+        //Running this in Visual Studio debugger is slow, try running .exe file directly from File Explorer or command line prompt
         await Parallel.ForEachAsync(jobs, new ParallelOptions { MaxDegreeOfParallelism = 50 }, async (job, token) =>
         {
             var start = stopwatch.ElapsedMilliseconds;
