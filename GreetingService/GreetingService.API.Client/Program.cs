@@ -244,7 +244,9 @@ public class GreetingServiceClient
 
         var stopwatch = Stopwatch.StartNew();           //use stopwatch to measure elapsed time just like a real world stopwatch
 
-        //Run multiple calls in parallel for maximum throughput - we will be limited by our cpu, wifi, internet speeds
+        //I cheat by running multiple calls in parallel for maximum throughput - we will be limited by our cpu, wifi, internet speeds
+        //This is a bit advanced and the syntax is new with lamdas - don't worry if you don't understand all of it.
+        //I always copy this from the internet and adapt to my needs
         await Parallel.ForEachAsync(jobs, new ParallelOptions { MaxDegreeOfParallelism = 50 }, async (job, token) =>
         {
             var start = stopwatch.ElapsedMilliseconds;
