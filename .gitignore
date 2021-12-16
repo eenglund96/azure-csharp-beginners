@@ -16,3 +16,6 @@
 *.user
 *.psess
 *.vsp
+*.pubxml
+profile.arm.json
+greetings.json
