@@ -1,5 +1,6 @@
 using GreetingService.Core.Interfaces;
 using GreetingService.Infrastructure;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
 });
 
 builder.Services.AddScoped<IUserService, AppSettingsUserService>();
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+builder.Logging.AddFilter<ApplicationInsightsLoggerProvider>("", LogLevel.Information);
 
 var app = builder.Build();
 
