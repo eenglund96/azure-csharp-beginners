@@ -1,4 +1,5 @@
-﻿using GreetingService.Core.Interfaces;
+﻿using GreetingService.API.Function.Authentication;
+using GreetingService.Core.Interfaces;
 using GreetingService.Infrastructure;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,8 @@ namespace GreetingService.API.Function
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddHttpClient();
+
+            builder.Services.AddLogging();
             
             builder.Services.AddScoped<IGreetingRepository, FileGreetingRepository>(c =>
             {
@@ -20,6 +23,8 @@ namespace GreetingService.API.Function
             });
 
             builder.Services.AddScoped<IUserService, AppSettingsUserService>();
+
+            builder.Services.AddScoped<IAuthHandler, BasicAuthHandler>();
         }
     }
 }
