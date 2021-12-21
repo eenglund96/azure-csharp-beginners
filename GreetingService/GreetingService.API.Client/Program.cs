@@ -23,10 +23,11 @@ public class GreetingServiceClient
 
     public static async Task Main(string[] args)
     {
-        var authParam = Convert.ToBase64String(Encoding.UTF8.GetBytes("keen:summer2022"));
+        var authParam = Convert.ToBase64String(Encoding.UTF8.GetBytes("keen:summer2025"));
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authParam);        //Always send this header for all requests from this HttpClient
         //_httpClient.BaseAddress = new Uri("http://localhost:5020/");
-        _httpClient.BaseAddress = new Uri("https://keen-appservice-dev.azurewebsites.net/");                                                //Always use this part of the uri in all requests sent from this HttpClient
+        //_httpClient.BaseAddress = new Uri("https://keen-appservice-dev.azurewebsites.net/");                                                //Always use this part of the uri in all requests sent from this HttpClient
+        _httpClient.BaseAddress = new Uri("https://keen-function-dev.azurewebsites.net/");                                                //Always use this part of the uri in all requests sent from this HttpClient
 
         Console.WriteLine("Welcome to command line Greeting client");
         Console.WriteLine("Enter name of greeting sender:");
