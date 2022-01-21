@@ -19,3 +19,4 @@
 *.pubxml
 profile.arm.json
 greetings.json
+local.settings.json
