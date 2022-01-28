@@ -82,6 +82,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
+            az group create -l westeurope -n keen-rg-dev
             az deployment group create --resource-group keen-rg-dev --template-file ./azure_resources.bicep --parameters appName=keentestdev
 
   deploy:
