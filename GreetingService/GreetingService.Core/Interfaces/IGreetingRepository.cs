@@ -13,5 +13,7 @@ namespace GreetingService.Core.Interfaces
         public IEnumerable<Greeting> Get();
         public void Create(Greeting greeting);
         public void Update(Greeting greeting);
-    }
+
+
+    }//comment
 }
