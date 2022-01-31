@@ -10,5 +10,6 @@ namespace GreetingService.Core.Interfaces
     {
         public bool IsValidUser(string username, string password);
         //comment
+        //comment
     }
 }
